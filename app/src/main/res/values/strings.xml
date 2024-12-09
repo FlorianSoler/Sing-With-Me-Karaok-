@@ -1,6 +1,3 @@
 <resources>
-    <string name="app_name">Sing With Me - karaoké - ENSSAT</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Playlist</string>
-    <string name="title_notifications">Karaoké</string>
+    <string name="app_name">Sing With Me</string>
 </resources>

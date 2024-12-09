@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Sing With Me - karaoké - ENSSAT"
+rootProject.name = "Sing With Me"
 include(":app")
  
