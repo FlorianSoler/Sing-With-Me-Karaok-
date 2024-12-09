@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.base.ExploreSongsScreen
 import fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.ui.theme.SingWithMeKaraokeTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,8 +23,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             SingWithMeKaraokeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) {
-                    LoadSongsButton(onClick = {
-                        Log.d("Load", "Load songs clicked.")
+                    ExploreSongsScreen(onSongClicked = { song ->
+                        // Handle song click
+                        println("Song clicked: ${song.name}")
                     })
                 }
             }
