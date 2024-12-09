@@ -1,4 +1,4 @@
-package fr.enssat.singwithme.soler_florian_duigou_gurvan
+package fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan
 
 import org.junit.Test
 

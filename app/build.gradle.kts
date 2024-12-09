@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "fr.enssat.singwithme.soler_florian_duigou_gurvan"
-    compileSdk = 34
+    namespace = "fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "fr.enssat.singwithme.soler_florian_duigou_gurvan"
+        applicationId = "fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan"
         minSdk = 28
         targetSdk = 34
         versionCode = 1

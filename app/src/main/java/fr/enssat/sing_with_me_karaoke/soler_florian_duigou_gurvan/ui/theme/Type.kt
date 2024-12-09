@@ -1,4 +1,4 @@
-package fr.enssat.singwithme.soler_florian_duigou_gurvan.ui.theme
+package fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
