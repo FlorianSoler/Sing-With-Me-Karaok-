@@ -1,6 +1,7 @@
 package fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -12,7 +13,7 @@ import androidx.compose.ui.Modifier
 import fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.base.ExploreSongsScreen
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.model.entities.Song
+import fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.entities.Song
 import fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.network.API
 import fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.ui.theme.SingWithMeKaraokeTheme
 import retrofit2.Call
@@ -31,8 +32,10 @@ class MainActivity : ComponentActivity() {
             SingWithMeKaraokeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) {
                     ExploreSongsScreen(songList = songs, onSongClicked = { song ->
-                        // Handle song click
-                        Log.d("songs", "CLICKEDDDDDDDDDDDDDDDDDDDDDD")
+                        Log.d("songs", song.toString())
+                        val intent = Intent(this, LyricsActivity::class.java)
+                        intent.putExtra("SONG_PATH", song.path)
+                        startActivity(intent)
                     })
                 }
             }

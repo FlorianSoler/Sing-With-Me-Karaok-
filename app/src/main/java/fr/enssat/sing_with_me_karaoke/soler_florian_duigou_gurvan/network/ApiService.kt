@@ -4,6 +4,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Url
 
 private const val BASE_URL = "https://gcpa-enssat-24-25.s3.eu-west-3.amazonaws.com"
 
@@ -21,4 +22,7 @@ object API {
 interface ApiService {
     @GET("/playlist.json")
     fun getSongs(): Call<String>
+
+    @GET
+    fun getLyrics(@Url url: String): Call<String>
 }

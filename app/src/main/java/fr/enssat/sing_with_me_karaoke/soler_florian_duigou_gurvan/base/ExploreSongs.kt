@@ -15,7 +15,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.ui.unit.dp
-import fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.model.entities.Song
+import fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.entities.Song
 
 // Define a type alias for a click listener
 typealias OnSongClicked = (Song) -> Unit
