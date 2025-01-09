@@ -18,7 +18,7 @@ class LyricsActivity : ComponentActivity() {
     }
 
     fun fetchLyrics(path: String) {
-        API.restrofitService.getLyrics(path).enqueue(object : Callback<String> {
+        API.retrofitService.getLyrics(path).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.isSuccessful) {
                     response.body()?.let {

@@ -1,10 +1,10 @@
-package fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.base
+package fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,40 +15,48 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.ui.unit.dp
-import fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.entities.Song
+import fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.model.Song
 
 // Define a type alias for a click listener
 typealias OnSongClicked = (Song) -> Unit
 
-class ExploreSongs {
-    companion object {
-        // Sample hardcoded list of songs
-        val sampleSongs = listOf(
-            Song(1,"Hey Jude", "The Beatles", "",true),
-            Song(2,"Wake Me up When September Ends", "Green Day", "",true),
-            Song(3,"Bohemian Rhapsody", "Queen", "Bohemian/Bohemian.md",false),
-            Song(4,"Creep", "Radio head", "Creep/creep.md", false)
-        )
+// Main composable to display the list of songs
+@Composable
+fun PlaylistScreen(
+    title: String = "Explore Songs",
+    playlistUiState: PlaylistUiState,
+    onSongClicked: OnSongClicked
+) {
+    when(playlistUiState) {
+        is PlaylistUiState.Loading -> LoadingScreen()
+        is PlaylistUiState.Success -> ResultScreen(title, playlistUiState.songs, onSongClicked)
+        is PlaylistUiState.Error -> ErrorScreen()
     }
 }
 
-// Main composable to display the list of songs
 @Composable
-fun ExploreSongsScreen(
-    title: String = "Explore Songs",
-    songList: List<Song> = ExploreSongs.sampleSongs,
-    onSongClicked: OnSongClicked
-) {
+fun LoadingScreen() {
+    Text("Chargement...")
+}
+
+@Composable
+fun ErrorScreen() {
+    Text("Erreur")
+}
+
+@Composable
+fun ResultScreen(title: String, songs: List<Song>, onSongClicked: OnSongClicked) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(text = title)
         Spacer(modifier = Modifier.height(16.dp))
 
         val listState = rememberLazyListState()
+        Log.d("songs", songs.toString())
 
         LazyColumn(state = listState) {
-            items(songList.size) { index ->
+            items(songs.size) { index ->
                 SongItem(
-                    song = songList[index],
+                    song = songs[index],
                     onSongClicked = onSongClicked
                 )
                 HorizontalDivider(color = Color.LightGray)
