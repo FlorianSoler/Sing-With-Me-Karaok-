@@ -29,7 +29,7 @@ fun PlaylistScreen(
 ) {
     when(playlistUiState) {
         is PlaylistUiState.Loading -> LoadingScreen()
-        is PlaylistUiState.Success -> ResultScreen(title, playlistUiState.songs, onSongClicked)
+        is PlaylistUiState.Success -> PlaylistResultScreen(title, playlistUiState.songs, onSongClicked)
         is PlaylistUiState.Error -> ErrorScreen()
     }
 }
@@ -45,7 +45,7 @@ fun ErrorScreen() {
 }
 
 @Composable
-fun ResultScreen(title: String, songs: List<Song>, onSongClicked: OnSongClicked) {
+fun PlaylistResultScreen(title: String, songs: List<Song>, onSongClicked: OnSongClicked) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(text = title)
         Spacer(modifier = Modifier.height(16.dp))
