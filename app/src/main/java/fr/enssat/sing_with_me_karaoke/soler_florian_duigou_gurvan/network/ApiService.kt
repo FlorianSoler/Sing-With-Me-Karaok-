@@ -9,7 +9,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Url
 
-private const val BASE_URL = "https://gcpa-enssat-24-25.s3.eu-west-3.amazonaws.com"
+const val BASE_URL = "https://gcpa-enssat-24-25.s3.eu-west-3.amazonaws.com"
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(ScalarsConverterFactory.create())

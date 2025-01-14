@@ -51,20 +51,10 @@ fun LyricsResultScreen(lyrics: String) {
     val context = LocalContext.current
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
-            val mediaItem = MediaItem.fromUri("https://gcpa-enssat-24-25.s3.eu-west-3.amazonaws.com/DontLookBack/DontLookBack.mp3")
+            val mediaItem = MediaItem.fromUri(parsedLyrics.soundtrackUrl)
             setMediaItem(mediaItem)
             prepare()
             playWhenReady = true
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        coroutineScope {
-            while (true) {
-                val currentPos = exoPlayer.currentPosition / 1000f
-                Log.d("songs", currentPos.toString())
-                delay(1000L)
-            }
         }
     }
 
