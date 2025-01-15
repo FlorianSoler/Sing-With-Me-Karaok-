@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -24,14 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import fr.enssat.sing_with_me_karaoke.soler_florian_duigou_gurvan.model.parseLyrics
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 
 @Composable
@@ -46,7 +43,6 @@ fun LyricsScreen(lyricsUiState: LyricsUiState) {
 @Composable
 fun LyricsResultScreen(lyrics: String) {
     val parsedLyrics = parseLyrics(lyrics)
-    Log.d("songs", parsedLyrics.toString())
 
     val context = LocalContext.current
     val exoPlayer = remember {
@@ -58,13 +54,56 @@ fun LyricsResultScreen(lyrics: String) {
         }
     }
 
-    KaraokeSimpleTextAnimate()
+    var currentLine by remember { mutableIntStateOf(-1) }
+    val karaokeAnimation = remember { Animatable(0f) }
+    val currentLyricText = remember(currentLine) {
+        parsedLyrics.lyrics.getOrNull(currentLine)?.second ?: ""
+    }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            val lyricIndex = parsedLyrics.lyrics.indexOfLast { (exoPlayer.currentPosition / 1000f) >= it.first }
+            //TODO: remove logs
+            Log.d("songs", "currentPosition = ${exoPlayer.currentPosition / 1000f}")
+            Log.d("songs", "lyricIndex = $lyricIndex")
+            Log.d("songs", "lyric = $currentLyricText")
+
+            if (lyricIndex != -1 && lyricIndex != currentLine) {
+                val nextLyric = parsedLyrics.lyrics.getOrNull(lyricIndex + 1)
+                val currentLyric = parsedLyrics.lyrics[lyricIndex]
+                val nextTimestamp = nextLyric?.first ?: Float.MAX_VALUE
+
+                val durationMillis = ((nextTimestamp - currentLyric.first) * 1000).toInt()
+
+                karaokeAnimation.snapTo(0f)
+                karaokeAnimation.animateTo(
+                    targetValue = 1f,
+                    animationSpec = tween(durationMillis, easing = LinearEasing)
+                )
+
+                currentLine = lyricIndex
+            }
+
+            delay(50)
+        }
+    }
 
     Box(
-        modifier = Modifier.fillMaxSize().padding(16.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
+        KaraokeSimpleText(
+            modifier = Modifier.align(Alignment.Center),
+            text = currentLyricText,
+            progress = karaokeAnimation.value
+        )
+
         AndroidView(
-            modifier = Modifier.width(300.dp).height(200.dp).align(Alignment.Center),
+            modifier = Modifier
+                .width(300.dp)
+                .height(200.dp)
+                .align(Alignment.BottomCenter),
             factory = { ctx ->
                 PlayerView(ctx).apply {
                     player = exoPlayer
@@ -78,10 +117,10 @@ fun LyricsResultScreen(lyrics: String) {
 }
 
 @Composable
-fun KaraokeSimpleText(text: String, progress: Float) {
+fun KaraokeSimpleText(modifier: Modifier, text: String, progress: Float) {
     var textWidth by remember { mutableIntStateOf(0) }
 
-    Box {
+    Box(modifier) {
         Text(
             text = text,
             color = Color.Red,
@@ -93,20 +132,16 @@ fun KaraokeSimpleText(text: String, progress: Float) {
                 text = text,
                 color = Color.Black,
                 maxLines = 1,
-                modifier = Modifier.clipToBounds().width((textWidth * progress).toInt().pxToDp())
+                modifier = Modifier
+                    .clipToBounds()
+                    .width(
+                        (textWidth * progress)
+                            .toInt()
+                            .pxToDp()
+                    )
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun KaraokeSimpleTextAnimate(duration: Int = 7, text: String = "Is this the real life? Is this just fantasy?") {
-    val karaokeAnimation = remember { Animatable(0f) }
-    LaunchedEffect(Unit) {
-        karaokeAnimation.animateTo(duration.toFloat(), tween(duration * 1000, easing = LinearEasing))
-    }
-    KaraokeSimpleText(text, karaokeAnimation.value)
 }
 
 @Composable

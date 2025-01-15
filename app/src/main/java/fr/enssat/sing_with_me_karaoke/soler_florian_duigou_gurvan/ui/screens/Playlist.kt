@@ -51,7 +51,6 @@ fun PlaylistResultScreen(title: String, songs: List<Song>, onSongClicked: OnSong
         Spacer(modifier = Modifier.height(16.dp))
 
         val listState = rememberLazyListState()
-        Log.d("songs", songs.toString())
 
         LazyColumn(state = listState) {
             items(songs.size) { index ->
